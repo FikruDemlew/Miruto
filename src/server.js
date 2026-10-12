@@ -1,7 +1,8 @@
 import express from 'express';
 import movieRoutes from './routes/movieRoutes.js';
 import { config } from 'dotenv';
-import { connectDB, disconnectDB } from './config/sb.js';
+import { connectDB, disconnectDB } from './config/db.js';
+import authRouters from './routes/authRouter.js'
 
 
 config();
@@ -9,8 +10,14 @@ connectDB();
 
 
 const app =express();
+// Body parsing middlwares
 
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+//API Routes
 app.use("/movies", movieRoutes);
+app.use("/auth", authRouters);
 
 app.listen(5001, () => {
     console.log('Server is running on port 5001');
